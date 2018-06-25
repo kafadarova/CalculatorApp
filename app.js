@@ -1,10 +1,15 @@
 //create a calculator variable
 const calculator = document.querySelector('.calculator');
+
 //create a variable for all keys which are children of .calculatorKeys
 const keys = calculator.querySelector('.calculatorKeys');
 
+// the display variable stores the current displayed number
+const display = document.querySelector('.calculatorDisplay');
+
 keys.addEventListener('click', e => {
   //The target event (e) property returns the element that triggered the event
+  //the number of the key what was clicked
   if (e.target.matches('button')) {}
 
   //determine the type of key that is clicked
@@ -13,9 +18,22 @@ keys.addEventListener('click', e => {
   //dataset property provides read/write access to all the custom data attributes (data-*) set on the element
   const action = key.dataset.action;
 
+  //textContent returns the text content of the element
+  //returns the content of the clicked element
+  const keyContent = key.textContent;
+
+  //returns the content of the displayed element
+  const displayedNum = display.textContents;
+
   //when action variable returns false that means that the key doesnt habe a data-action, which means it is a number key
   if (!action) {
-    console.log('number key!')
+    //if the calculator shows 0 - replace it with the clicked key
+    if (displayedNum === '0') {
+      display.textContent = keyContent;
+    } else {
+      //append the clicked key to the displayed number
+      display.textContent = displayedNum + keyContent;
+    }
   }
 
   if (
