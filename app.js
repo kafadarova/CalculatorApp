@@ -53,15 +53,18 @@ keys.addEventListener('click', e => {
     }
 
     if (action === 'clear') {
-      console.log('clear key!')
+      console.log('clear key!');
     }
 
     if (action === 'calculate') {
-      console.log('equal key!')
-
-
-
-
+      console.log('equal key!');
     }
+    //Remove .is-depressed class for all keys
+
+    //using array.from - The Array.from() method creates a new, shallow-copied Array instance from an array-like or iterable object
+    //children property - contains all of the child elements of the node upon which it was called.
+    //the parentNode of the key is the calculatorKeys div
+    Array.from(key.parentNode.children)
+      .forEach(k => k.classList.remove('is-depressed'));
   }
 })
