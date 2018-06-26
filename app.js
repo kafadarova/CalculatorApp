@@ -43,7 +43,9 @@ keys.addEventListener('click', e => {
       action === 'multiply' ||
       action === 'divide'
     ) {
-      console.log('operator key!')
+      //Using classList is a convenient alternative to accessing an element's list of classes
+      //add method adds a specified class
+      key.classList.add('is-depressed');
     }
 
     if (action === 'decimal') {
@@ -56,6 +58,10 @@ keys.addEventListener('click', e => {
 
     if (action === 'calculate') {
       console.log('equal key!')
+
+
+
+
     }
   }
 })
