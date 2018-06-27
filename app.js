@@ -55,7 +55,16 @@ keys.addEventListener('click', e => {
       //when we want to calculate more than two numbers
       //check if the operator is has been already hit- if yes dont perform a calculation before hit another number
       if (firstValue && operator && previousKeyType !== 'operator') {
-        display.textContent = calculate(firstValue, operator, secondValue)
+        //create a new variable and assign the result of the calculation to it
+        const calcValue = calculate(firstValue, operator, secondValue)
+        display.textContent = calcValue;
+
+        //Update calculated value as firstValue
+        calculator.dataset.firstValue = calcValue;
+      } else {
+        //If there are not calculations, set displayedNum as the firstValue
+        //the displayed number rigth after hitting the operator
+        calculator.dataset.firstValue = displayedNum
       }
 
       //Using classList is a convenient alternative to accessing an element's list of classes
@@ -65,9 +74,6 @@ keys.addEventListener('click', e => {
       //add custom attribute
       //update previousKeyType as a operator for pressed operator key
       calculator.dataset.previousKeyType = 'operator';
-
-      //the displayed number rigth after hitting the operator
-      calculator.dataset.firstValue = displayedNum;
 
       //storing the type of the action, operator which was clicked
       calculator.dataset.operator = action;
