@@ -52,7 +52,9 @@ keys.addEventListener('click', e => {
       const operator = calculator.dataset.operator;
       const secondValue = displayedNum;
 
-      if (firstValue && operator) {
+      //when we want to calculate more than two numbers
+      //check if the operator is has been already hit- if yes dont perform a calculation before hit another number
+      if (firstValue && operator && previousKeyType !== 'operator') {
         display.textContent = calculate(firstValue, operator, secondValue)
       }
 
