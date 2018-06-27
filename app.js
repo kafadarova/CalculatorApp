@@ -48,6 +48,14 @@ keys.addEventListener('click', e => {
       action === 'multiply' ||
       action === 'divide'
     ) {
+      const firstValue = calculator.dataset.firstValue;
+      const operator = calculator.dataset.operator;
+      const secondValue = displayedNum;
+
+      if (firstValue && operator) {
+        display.textContent = calculate(firstValue, operator, secondValue)
+      }
+
       //Using classList is a convenient alternative to accessing an element's list of classes
       //add method adds a specified class
       key.classList.add('is-depressed');
