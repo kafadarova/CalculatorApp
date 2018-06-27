@@ -102,7 +102,10 @@ keys.addEventListener('click', e => {
       //create a secondValue constant which is equal to the currently displayed number.
       const secondValue = displayedNum;
 
-      display.textContent = calculate(firstValue, operator, secondValue);
+      //only when the firstValue set => execute the calculate function
+      if (firstValue) {
+        display.textContent = calculate(firstValue, operator, secondValue);
+      }
 
       //update previousKeyType as a calculate for pressed equal key
       calculator.dataset.previousKey = 'calculate';
