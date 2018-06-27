@@ -38,6 +38,8 @@ keys.addEventListener('click', e => {
         //append the clicked key to the displayed number
         display.textContent = displayedNum + keyContent;
       }
+      //update previousKeyType to a number for pressed number key
+      calculator.dataset.previousKey = 'number';
     }
 
     if (
@@ -51,19 +53,31 @@ keys.addEventListener('click', e => {
       key.classList.add('is-depressed');
 
       //add custom attribute
+      //update previousKeyType as a operator for pressed operator key
       calculator.dataset.previousKeyType = 'operator';
+
       //the displayed number rigth after hitting the operator
       calculator.dataset.firstValue = displayedNum;
+
       //storing the type of the action, operator which was clicked
       calculator.dataset.operator = action;
     }
 
     if (action === 'decimal') {
-      display.textContent = displayedNum + '.';
+      //Do nothing if string has a dot
+      if (!displayedNum.includes('.')) {
+        display.textContent = displayedNum + '.';
+      } else if (previousKeyType === 'operator') {
+        display.textContent = '0.';
+      }
+      //set previousKeyType to a decimal for pressed decimal key
+      calculator.dataset.previousKey = 'decimal';
     }
 
     if (action === 'clear') {
       console.log('clear key!');
+      //update previousKeyType as a clear for pressed clear key
+      calculator.dataset.previousKey = 'clear';
     }
 
     if (action === 'calculate') {
@@ -73,6 +87,9 @@ keys.addEventListener('click', e => {
       const secondValue = displayedNum;
 
       display.textContent = calculate(firstValue, operator, secondValue);
+
+      //update previousKeyType as a calculate for pressed equal key
+      calculator.dataset.previousKey = 'calculate';
     }
     //Remove .is-depressed class for all keys
 
@@ -81,6 +98,7 @@ keys.addEventListener('click', e => {
     //the parentNode of the key is the calculatorKeys div
     Array.from(key.parentNode.children)
       .forEach(k => k.classList.remove('is-depressed'));
+
   }
 })
 
