@@ -96,6 +96,12 @@ keys.addEventListener('click', e => {
       calculator.dataset.previousKey = 'clear';
     }
 
+    //change the text of the clear button, if the ation is not the pressing of the clear button .the clear entry - CE - will be shown.
+    if (action !== 'clear') {
+      const clearButton = calculator.querySelector('[data-actionc=clear]');
+      clearButton.textContent = 'CE';
+    }
+
     if (action === 'calculate') {
       let firstValue = calculator.dataset.firstValue;
       const operator = calculator.dataset.operator;
