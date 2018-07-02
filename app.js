@@ -91,7 +91,8 @@ keys.addEventListener('click', e => {
     }
 
     if (action === 'clear') {
-      console.log('clear key!');
+      display.textContent = 0;
+      key.textContent = 'AC';
       //update previousKeyType as a clear for pressed clear key
       calculator.dataset.previousKey = 'clear';
     }
