@@ -91,8 +91,15 @@ keys.addEventListener('click', e => {
     }
 
     if (action === 'clear') {
+      if (key.textContent === 'AC') {
+        calculator.dataset.firstValue = '';
+        calculator.dataset.modValue = '';
+        calculator.dataset.operator = '';
+        calculator.dataset.previousKeyType = '';
+      } else {
+        key.textContent = 'AC';
+      }
       display.textContent = 0;
-      key.textContent = 'AC';
       //update previousKeyType as a clear for pressed clear key
       calculator.dataset.previousKey = 'clear';
     }
