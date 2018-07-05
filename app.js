@@ -143,13 +143,9 @@ keys.addEventListener('click', e => {
 
 //creating a calculate function
 const calculate = (n1, operator, n2) => {
-  if (operator === 'add') {
-    return firstNum + parseFloat(n2);
-  } else if (operator === 'subtract') {
-    return parseFloat(n1) - parseFloat(n2);
-  } else if (operator === 'multiply') {
-    return parseFloat(n1) * parseFloat(n2);
-  } else if (operator === 'divide') {
-    return parseFloat(n1) / parseFloat(n2);
-  }
+  //using early returns
+  if (operator === 'add') return firstNum + parseFloat(n2);
+  if (operator === 'subtract') return parseFloat(n1) - parseFloat(n2);
+  if (operator === 'multiply') return parseFloat(n1) * parseFloat(n2);
+  if (operator === 'divide') return parseFloat(n1) / parseFloat(n2);
 }
