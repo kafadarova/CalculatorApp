@@ -32,6 +32,12 @@ keys.addEventListener('click', e => {
     //create an pure function which return the value needs to be displayed on the calculator
 
     const createResultString = () => {
+      // Variables required are:
+      // 1. keyContent
+      // 2. displayedNum
+      // 3. previousKeyType
+      // 4. action
+
       if (!action) {
         //if the calculator shows 0 - replace it with the clicked key
         //if the previousKeyType is an operator - replace the displayed number with the clicked number
