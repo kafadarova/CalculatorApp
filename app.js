@@ -46,108 +46,110 @@ keys.addEventListener('click', e => {
           previousKeyType === 'operator' ||
           previousKeyType === 'calculate' ? keyContent : displayedNum + keyContent; //append the clicked key to the displayed number
       }
+
+
+      if (action === 'decimal') {
+        //Do nothing if string has a dot
+        if (!displayedNum.includes('.')) return displayedNum + '.';
+        if (previousKeyType === 'operator' || previousKeyType === 'calculate') return '0.';
+        //when neither conditions is matched return the currently dipslayed number
+        return displayedNum;
+      }
     }
+
+
+
     //update previousKeyType to a number for pressed number key
     calculator.dataset.previousKey = 'number';
-  }
-
-  if (
-    action === 'add' ||
-    action === 'subtract' ||
-    action === 'multiply' ||
-    action === 'divide'
-  ) {
-    const firstValue = calculator.dataset.firstValue;
-    const operator = calculator.dataset.operator;
-    const secondValue = displayedNum;
-
-    //when we want to calculate more than two numbers
-    //check if the operator is has been already hit- if yes dont perform a calculation before hit another number
-    if (firstValue && operator && previousKeyType !== 'operator') {
-      //create a new variable and assign the result of the calculation to it
-      const calcValue = calculate(firstValue, operator, secondValue)
-      display.textContent = calcValue;
-
-      //Update calculated value as firstValue
-      calculator.dataset.firstValue = calcValue;
-    } else {
-      //If there are not calculations, set displayedNum as the firstValue
-      //the displayed number rigth after hitting the operator
-      calculator.dataset.firstValue = displayedNum
-    }
-
-    //Using classList is a convenient alternative to accessing an element's list of classes
-    //add method adds a specified class
-    key.classList.add('is-depressed');
-
-    //add custom attribute
-    //update previousKeyType as a operator for pressed operator key
-    calculator.dataset.previousKeyType = 'operator';
-
-    //storing the type of the action, operator which was clicked
-    calculator.dataset.operator = action;
-  }
-
-  if (action === 'decimal') {
-    //Do nothing if string has a dot
-    if (!displayedNum.includes('.')) {
-      display.textContent = displayedNum + '.';
-    } else if (previousKeyType === 'operator') {
-      display.textContent = '0.';
-    }
     //set previousKeyType to a decimal for pressed decimal key
     calculator.dataset.previousKey = 'decimal';
-  }
 
-  if (action === 'clear') {
-    if (key.textContent === 'AC') {
-      calculator.dataset.firstValue = '';
-      calculator.dataset.modValue = '';
-      calculator.dataset.operator = '';
-      calculator.dataset.previousKeyType = '';
-    } else {
-      key.textContent = 'AC';
-    }
-    display.textContent = 0;
-    //update previousKeyType as a clear for pressed clear key
-    calculator.dataset.previousKey = 'clear';
-  }
+    if (
+      action === 'add' ||
+      action === 'subtract' ||
+      action === 'multiply' ||
+      action === 'divide'
+    ) {
+      const firstValue = calculator.dataset.firstValue;
+      const operator = calculator.dataset.operator;
+      const secondValue = displayedNum;
 
-  //change the text of the clear button, if the ation is not the pressing of the clear button .the clear entry - CE - will be shown.
-  if (action !== 'clear') {
-    const clearButton = calculator.querySelector('[data-actionc=clear]');
-    clearButton.textContent = 'CE';
-  }
+      //when we want to calculate more than two numbers
+      //check if the operator is has been already hit- if yes dont perform a calculation before hit another number
+      if (firstValue && operator && previousKeyType !== 'operator') {
+        //create a new variable and assign the result of the calculation to it
+        const calcValue = calculate(firstValue, operator, secondValue)
+        display.textContent = calcValue;
 
-  if (action === 'calculate') {
-    let firstValue = calculator.dataset.firstValue;
-    const operator = calculator.dataset.operator;
-    //create a secondValue constant which is equal to the currently displayed number.
-    const secondValue = displayedNum;
-
-    //only when the firstValue set => execute the calculate function
-    if (firstValue) {
-      //correcting the calculation - when after calculation and hitting the calculate key again -> set the result to the firstValue
-      if (previousKeyType === 'calculate') {
-        firstValue = displayedNum;
-        secondValue = calculator.dataset.modValue;
+        //Update calculated value as firstValue
+        calculator.dataset.firstValue = calcValue;
+      } else {
+        //If there are not calculations, set displayedNum as the firstValue
+        //the displayed number rigth after hitting the operator
+        calculator.dataset.firstValue = displayedNum
       }
-      display.textContent = calculate(firstValue, operator, secondValue);
+
+      //Using classList is a convenient alternative to accessing an element's list of classes
+      //add method adds a specified class
+      key.classList.add('is-depressed');
+
+      //add custom attribute
+      //update previousKeyType as a operator for pressed operator key
+      calculator.dataset.previousKeyType = 'operator';
+
+      //storing the type of the action, operator which was clicked
+      calculator.dataset.operator = action;
     }
-    //set modValue attribute - carry forward the previous secondValue into the new calculation
-    calculator.dataset.modValue = secondValue;
-    //update previousKeyType as a calculate for pressed equal key
-    calculator.dataset.previousKey = 'calculate';
+
+    if (action === 'clear') {
+      if (key.textContent === 'AC') {
+        calculator.dataset.firstValue = '';
+        calculator.dataset.modValue = '';
+        calculator.dataset.operator = '';
+        calculator.dataset.previousKeyType = '';
+      } else {
+        key.textContent = 'AC';
+      }
+      display.textContent = 0;
+      //update previousKeyType as a clear for pressed clear key
+      calculator.dataset.previousKey = 'clear';
+    }
+
+    //change the text of the clear button, if the ation is not the pressing of the clear button .the clear entry - CE - will be shown.
+    if (action !== 'clear') {
+      const clearButton = calculator.querySelector('[data-actionc=clear]');
+      clearButton.textContent = 'CE';
+    }
+
+    if (action === 'calculate') {
+      let firstValue = calculator.dataset.firstValue;
+      const operator = calculator.dataset.operator;
+      //create a secondValue constant which is equal to the currently displayed number.
+      const secondValue = displayedNum;
+
+      //only when the firstValue set => execute the calculate function
+      if (firstValue) {
+        //correcting the calculation - when after calculation and hitting the calculate key again -> set the result to the firstValue
+        if (previousKeyType === 'calculate') {
+          firstValue = displayedNum;
+          secondValue = calculator.dataset.modValue;
+        }
+        display.textContent = calculate(firstValue, operator, secondValue);
+      }
+      //set modValue attribute - carry forward the previous secondValue into the new calculation
+      calculator.dataset.modValue = secondValue;
+      //update previousKeyType as a calculate for pressed equal key
+      calculator.dataset.previousKey = 'calculate';
+    }
+    //Remove .is-depressed class for all keys
+
+    //using array.from - The Array.from() method creates a new, shallow-copied Array instance from an array-like or iterable object
+    //children property - contains all of the child elements of the node upon which it was called.
+    //the parentNode of the key is the calculatorKeys div
+    Array.from(key.parentNode.children)
+      .forEach(k => k.classList.remove('is-depressed'));
+
   }
-  //Remove .is-depressed class for all keys
-
-  //using array.from - The Array.from() method creates a new, shallow-copied Array instance from an array-like or iterable object
-  //children property - contains all of the child elements of the node upon which it was called.
-  //the parentNode of the key is the calculatorKeys div
-  Array.from(key.parentNode.children)
-    .forEach(k => k.classList.remove('is-depressed'));
-
-}
 })
 
 //creating a calculate function
