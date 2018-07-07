@@ -79,6 +79,25 @@ keys.addEventListener('click', e => {
 
       if (action === 'clear') return 0;
 
+      if (action === 'calculate') {
+        let firstValue = calculator.dataset.firstValue;
+        const operator = calculator.dataset.operator;
+        //create a secondValue constant which is equal to the currently displayed number.
+        const secondValue = displayedNum;
+
+        //only when the firstValue set => execute the calculate function
+        if (firstValue) {
+          //correcting the calculation - when after calculation and hitting the calculate key again -> set the result to the firstValue
+          if (previousKeyType === 'calculate') {
+            firstValue = displayedNum;
+            secondValue = calculator.dataset.modValue;
+          }
+          return calculate(firstValue, operator, secondValue);
+        } else {
+          return displayedNum;
+        }
+      }
+
     }
 
 
@@ -89,6 +108,11 @@ keys.addEventListener('click', e => {
     calculator.dataset.previousKey = 'decimal';
     //update previousKeyType as a clear for pressed clear key
     calculator.dataset.previousKey = 'clear';
+
+    //set modValue attribute - carry forward the previous secondValue into the new calculation
+    calculator.dataset.modValue = secondValue;
+    //update previousKeyType as a calculate for pressed equal key
+    calculator.dataset.previousKey = 'calculate';
 
     //Using classList is a convenient alternative to accessing an element's list of classes
     //add method adds a specified class
@@ -108,26 +132,7 @@ keys.addEventListener('click', e => {
       clearButton.textContent = 'CE';
     }
 
-    if (action === 'calculate') {
-      let firstValue = calculator.dataset.firstValue;
-      const operator = calculator.dataset.operator;
-      //create a secondValue constant which is equal to the currently displayed number.
-      const secondValue = displayedNum;
 
-      //only when the firstValue set => execute the calculate function
-      if (firstValue) {
-        //correcting the calculation - when after calculation and hitting the calculate key again -> set the result to the firstValue
-        if (previousKeyType === 'calculate') {
-          firstValue = displayedNum;
-          secondValue = calculator.dataset.modValue;
-        }
-        display.textContent = calculate(firstValue, operator, secondValue);
-      }
-      //set modValue attribute - carry forward the previous secondValue into the new calculation
-      calculator.dataset.modValue = secondValue;
-      //update previousKeyType as a calculate for pressed equal key
-      calculator.dataset.previousKey = 'calculate';
-    }
     //Remove .is-depressed class for all keys
 
     //using array.from - The Array.from() method creates a new, shallow-copied Array instance from an array-like or iterable object
