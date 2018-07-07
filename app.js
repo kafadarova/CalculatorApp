@@ -76,6 +76,9 @@ keys.addEventListener('click', e => {
           ?
           calculate(firstValue, operator, displayedNum) : displayedNum // return the displayed number.
       }
+
+      if (action === 'clear') return 0;
+
     }
 
 
@@ -84,6 +87,8 @@ keys.addEventListener('click', e => {
     calculator.dataset.previousKey = 'number';
     //set previousKeyType to a decimal for pressed decimal key
     calculator.dataset.previousKey = 'decimal';
+    //update previousKeyType as a clear for pressed clear key
+    calculator.dataset.previousKey = 'clear';
 
     //Using classList is a convenient alternative to accessing an element's list of classes
     //add method adds a specified class
@@ -95,57 +100,43 @@ keys.addEventListener('click', e => {
 
     //storing the type of the action, operator which was clicked
     calculator.dataset.operator = action;
-  }
 
-  if (action === 'clear') {
-    if (key.textContent === 'AC') {
-      calculator.dataset.firstValue = '';
-      calculator.dataset.modValue = '';
-      calculator.dataset.operator = '';
-      calculator.dataset.previousKeyType = '';
-    } else {
-      key.textContent = 'AC';
+
+    //change the text of the clear button, if the ation is not the pressing of the clear button .the clear entry - CE - will be shown.
+    if (action !== 'clear') {
+      const clearButton = calculator.querySelector('[data-actionc=clear]');
+      clearButton.textContent = 'CE';
     }
-    display.textContent = 0;
-    //update previousKeyType as a clear for pressed clear key
-    calculator.dataset.previousKey = 'clear';
-  }
 
-  //change the text of the clear button, if the ation is not the pressing of the clear button .the clear entry - CE - will be shown.
-  if (action !== 'clear') {
-    const clearButton = calculator.querySelector('[data-actionc=clear]');
-    clearButton.textContent = 'CE';
-  }
+    if (action === 'calculate') {
+      let firstValue = calculator.dataset.firstValue;
+      const operator = calculator.dataset.operator;
+      //create a secondValue constant which is equal to the currently displayed number.
+      const secondValue = displayedNum;
 
-  if (action === 'calculate') {
-    let firstValue = calculator.dataset.firstValue;
-    const operator = calculator.dataset.operator;
-    //create a secondValue constant which is equal to the currently displayed number.
-    const secondValue = displayedNum;
-
-    //only when the firstValue set => execute the calculate function
-    if (firstValue) {
-      //correcting the calculation - when after calculation and hitting the calculate key again -> set the result to the firstValue
-      if (previousKeyType === 'calculate') {
-        firstValue = displayedNum;
-        secondValue = calculator.dataset.modValue;
+      //only when the firstValue set => execute the calculate function
+      if (firstValue) {
+        //correcting the calculation - when after calculation and hitting the calculate key again -> set the result to the firstValue
+        if (previousKeyType === 'calculate') {
+          firstValue = displayedNum;
+          secondValue = calculator.dataset.modValue;
+        }
+        display.textContent = calculate(firstValue, operator, secondValue);
       }
-      display.textContent = calculate(firstValue, operator, secondValue);
+      //set modValue attribute - carry forward the previous secondValue into the new calculation
+      calculator.dataset.modValue = secondValue;
+      //update previousKeyType as a calculate for pressed equal key
+      calculator.dataset.previousKey = 'calculate';
     }
-    //set modValue attribute - carry forward the previous secondValue into the new calculation
-    calculator.dataset.modValue = secondValue;
-    //update previousKeyType as a calculate for pressed equal key
-    calculator.dataset.previousKey = 'calculate';
+    //Remove .is-depressed class for all keys
+
+    //using array.from - The Array.from() method creates a new, shallow-copied Array instance from an array-like or iterable object
+    //children property - contains all of the child elements of the node upon which it was called.
+    //the parentNode of the key is the calculatorKeys div
+    Array.from(key.parentNode.children)
+      .forEach(k => k.classList.remove('is-depressed'));
+
   }
-  //Remove .is-depressed class for all keys
-
-  //using array.from - The Array.from() method creates a new, shallow-copied Array instance from an array-like or iterable object
-  //children property - contains all of the child elements of the node upon which it was called.
-  //the parentNode of the key is the calculatorKeys div
-  Array.from(key.parentNode.children)
-    .forEach(k => k.classList.remove('is-depressed'));
-
-}
 })
 
 //creating a calculate function
