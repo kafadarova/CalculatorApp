@@ -83,16 +83,16 @@ keys.addEventListener('click', e => {
         let firstValue = calculator.dataset.firstValue;
         const operator = calculator.dataset.operator;
         //create a secondValue constant which is equal to the currently displayed number.
-        const secondValue = displayedNum;
+        // const secondValue = displayedNum;
+        const modValue = calculator.dataset.modValue;
+
 
         //only when the firstValue set => execute the calculate function
         if (firstValue) {
           //correcting the calculation - when after calculation and hitting the calculate key again -> set the result to the firstValue
-          if (previousKeyType === 'calculate') {
-            firstValue = displayedNum;
-            secondValue = calculator.dataset.modValue;
-          }
-          return calculate(firstValue, operator, secondValue);
+          return previousKeyType === 'calculate' ?
+            calculate(displayedNum, operator, modValue) :
+            calculate(firstValue, operator, displayedNum)
         } else {
           return displayedNum;
         }
