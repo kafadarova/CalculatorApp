@@ -88,16 +88,16 @@ keys.addEventListener('click', e => {
 
 
         //only when the firstValue set => execute the calculate function
-        if (firstValue) {
+        return firstValue
           //correcting the calculation - when after calculation and hitting the calculate key again -> set the result to the firstValue
-          return previousKeyType === 'calculate' ?
-            calculate(displayedNum, operator, modValue) :
-            calculate(firstValue, operator, displayedNum)
-        } else {
-          return displayedNum;
-        }
+          ?
+          previousKeyType === 'calculate' ?
+          calculate(displayedNum, operator, modValue) :
+          calculate(firstValue, operator, displayedNum)
+          //else
+          :
+          displayedNum;
       }
-
     }
 
 
