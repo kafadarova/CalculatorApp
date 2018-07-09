@@ -39,7 +39,7 @@ keys.addEventListener('click', e => {
       // 4. action
       // 5. calculator.dataset.firstValue
       // 6. calculator.dataset.operator
-
+      // 7. calculator.dataset.modValue
       if (!action) {
         //if the calculator shows 0 - replace it with the clicked key
         //if the previousKeyType is an operator - replace the displayed number with the clicked number
