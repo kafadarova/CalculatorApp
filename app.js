@@ -7,25 +7,39 @@ const keys = calculator.querySelector('.calculatorKeys');
 // the display variable stores the current displayed number
 const display = document.querySelector('.calculatorDisplay');
 
+//call the createResultString function which needs  three variables—key, displayedNum and calculator.dataset(create a variable called state)
+const createResultString = (key, displayedNum, state) => {
+  //get the keyContent and action from key
+  const keyContent = key.textContent;
+  const action = key.dataset.action;
+  const firstValue = state.firstValue;
+  const modValue = state.modValue;
+  const operator = state.operator;
+  const previousKeyType = state.previousKeyType;
+}
+
+
 keys.addEventListener('click', e => {
   //The target event (e) property returns the element that triggered the event
   //the number of the key what was clicked
   if (e.target.matches('button')) {
-
-    //determine the type of key that is clicked
-    //the const key = which key is clicked
-    const key = e.target;
-    //dataset property provides read/write access to all the custom data attributes (data-*) set on the element
-    const action = key.dataset.action;
-
-    //textContent returns the text content of the element
-    //returns the content of the clicked element
-    const keyContent = key.textContent;
-
-    //returns the content of the displayed element
     const displayedNum = display.textContent;
+    const resultString = createResultString(e.target, displayedNum, calculator.dataset);
 
-    const previousKeyType = calculator.dataset.previousKeyType;
+    // //determine the type of key that is clicked
+    // //the const key = which key is clicked
+    // const key = e.target;
+    // //dataset property provides read/write access to all the custom data attributes (data-*) set on the element
+    // const action = key.dataset.action;
+
+    // //textContent returns the text content of the element
+    // //returns the content of the clicked element
+    // const keyContent = key.textContent;
+    //
+    // //returns the content of the displayed element
+    // const displayedNum = display.textContent;
+    //
+    // const previousKeyType = calculator.dataset.previousKeyType;
 
     //when action variable returns false that means that the key doesnt have a data-action,
     // which means it is a number key
