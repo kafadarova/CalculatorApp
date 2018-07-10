@@ -171,3 +171,17 @@ const calculate = (n1, operator, n2) => {
   if (operator === 'multiply') return firstNum * secondNum;
   if (operator === 'divide') return firstNum / secondNum;
 }
+
+//create a function which return the type of key was clicked
+const getTypeKey = (key) => {
+  const (action) = key.dataset;
+  if (!action) return 'number'
+  if (
+    action === 'add' ||
+    action === 'subtract' ||
+    action === 'multiply' ||
+    action === 'divide'
+  ) return 'operator'
+  // For everything else, return the action
+  return action;
+}
