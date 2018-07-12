@@ -109,17 +109,37 @@ keys.addEventListener('click', e => {
       //children property - contains all of the child elements of the node upon which it was called.
       //the parentNode of the key is the calculatorKeys div
       Array.from(key.parentNode.children).forEach(k =>
-        k.classList.remove('is-depressed'));
+        k.classList.remove('is-depressed')); //Remove .is-depressed class for all keys
 
       if (keyType === 'operator') {
-        key.classList.add('is-depressed')
+        //Using classList is a convenient alternative to accessing an element's list of classes
+        //added method adds a specified class
+        key.classList.add('is-depressed');
+        //storing the type of the action, operator which was clicked
         calculator.dataset.operator = key.dataset.action;
         calculator.dataset.firstValue = firstValue &&
           operator &&
           previousKeyType !== 'operator' &&
           previousKeyType !== 'calculate' ?
           calculatedValue :
-          displayedNum
+          displayedNum;
+      }
+
+      if (action === 'clear') {
+        if (key.textContent === 'AC') {
+          calculator.dataset.firstValue = ''
+          calculator.dataset.modValue = ''
+          calculator.dataset.operator = ''
+          calculator.dataset.previousKeyType = ''
+        } else {
+          key.textContent = 'AC'
+        }
+      }
+
+      //change the text of the clear button, if the ation is not the pressing of the clear button .the clear entry - CE - will be shown.
+      if (action !== 'clear') {
+        const clearButton = calculator.querySelector('[data-actionc=clear]');
+        clearButton.textContent = 'CE';
       }
     }
 
@@ -129,22 +149,8 @@ keys.addEventListener('click', e => {
     calculator.dataset.modValue = secondValue;
 
 
-    //Using classList is a convenient alternative to accessing an element's list of classes
-    //add method adds a specified class
-    key.classList.add('is-depressed');
-
-    //storing the type of the action, operator which was clicked
-    calculator.dataset.operator = action;
 
 
-    //change the text of the clear button, if the ation is not the pressing of the clear button .the clear entry - CE - will be shown.
-    if (action !== 'clear') {
-      const clearButton = calculator.querySelector('[data-actionc=clear]');
-      clearButton.textContent = 'CE';
-    }
-
-
-    //Remove .is-depressed class for all keys
 
 
     //creating a calculate function
