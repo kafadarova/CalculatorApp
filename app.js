@@ -11,12 +11,19 @@ keys.addEventListener('click', e => {
       //The target event (e) property returns the element that triggered the event
       //the number of the key what was clicked
       if (e.target.matches('button')) return
-      const displayedNum = display.textContent;
-      const resultString = createResultString(e.target, displayedNum, calculator.dataset);
 
-      // //determine the type of key that is clicked
-      // //the const key = which key is clicked
-      // const key = e.target;
+      //determine the type of key that is clicked
+      //the const key = which key is clicked
+      const key = e.target;
+      const displayedNum = display.textContent;
+      const resultString = createResultString(key, displayedNum, calculator.dataset);
+
+      display.textContent = resultString;
+
+      // Pass in necessary values
+      updateCalculatorState(key, calculator, resultString, displayedNum);
+
+
       // //dataset property provides read/write access to all the custom data attributes (data-*) set on the element
       // const action = key.dataset.action;
 
@@ -101,7 +108,7 @@ keys.addEventListener('click', e => {
     }
 
     //create the updateCalculatorState function which changes the calculator's visual appearance and custom attributes.
-    const updateCalculatorState = (key, calculator) => {
+    const updateCalculatorState = (key, calculator, calculatedValue, displayedNum) => {
       const keyType = getKeyType(key);
       calculator.dataset.previousKeyType = keyType;
 
@@ -148,16 +155,6 @@ keys.addEventListener('click', e => {
           displayedNum;
       }
     }
-
-
-
-    //set modValue attribute - carry forward the previous secondValue into the new calculation
-    calculator.dataset.modValue = secondValue;
-
-
-
-
-
 
     //creating a calculate function
     const calculate = (n1, operator, n2) => {
