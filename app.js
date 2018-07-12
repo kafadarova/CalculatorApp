@@ -141,6 +141,12 @@ keys.addEventListener('click', e => {
         const clearButton = calculator.querySelector('[data-actionc=clear]');
         clearButton.textContent = 'CE';
       }
+
+      if (keyType === 'calculate') {
+        calculator.dataset.modValue = firstValue && previousKeyType === 'calculate' ?
+          modValue :
+          displayedNum;
+      }
     }
 
 
