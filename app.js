@@ -108,10 +108,19 @@ keys.addEventListener('click', e => {
       //using array.from - The Array.from() method creates a new, shallow-copied Array instance from an array-like or iterable object
       //children property - contains all of the child elements of the node upon which it was called.
       //the parentNode of the key is the calculatorKeys div
-      //Remove .is-depressed class for all keys
       Array.from(key.parentNode.children).forEach(k =>
         k.classList.remove('is-depressed'));
 
+      if (keyType === 'operator') {
+        key.classList.add('is-depressed')
+        calculator.dataset.operator = key.dataset.action;
+        calculator.dataset.firstValue = firstValue &&
+          operator &&
+          previousKeyType !== 'operator' &&
+          previousKeyType !== 'calculate' ?
+          calculatedValue :
+          displayedNum
+      }
     }
 
 
@@ -133,6 +142,10 @@ keys.addEventListener('click', e => {
       const clearButton = calculator.querySelector('[data-actionc=clear]');
       clearButton.textContent = 'CE';
     }
+
+
+    //Remove .is-depressed class for all keys
+
 
     //creating a calculate function
     const calculate = (n1, operator, n2) => {
