@@ -1,0 +1,1 @@
+This calculator app is build using the sources from the article by Zell Liew (https://medium.freecodecamp.org/how-to-build-an-html-calculator-app-from-scratch-using-javascript-4454b8714b98). You need to have a decent command of JavaScript. If/else statement, for loops , JS functions, arrow functions, event listenets are prerequisites for building this project.
