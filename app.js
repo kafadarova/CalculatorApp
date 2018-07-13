@@ -7,6 +7,36 @@ const keys = calculator.querySelector('.calculatorKeys');
 // the display variable stores the current displayed number
 const display = document.querySelector('.calculatorDisplay');
 
+
+
+//creating a calculate function
+const calculate = (n1, operator, n2) => {
+  //create two variables which contain float values
+  const firstNum = parseFloat(n1);
+  const secondNum = parseFloat(n2);
+  //using early returns
+  if (operator === 'add') return firstNum + secondNum;
+  if (operator === 'subtract') return firstNum - secondNum;
+  if (operator === 'multiply') return firstNum * secondNum;
+  if (operator === 'divide') return firstNum / secondNum;
+}
+
+//create a function which return the type of key was clicked
+const getKeyType = (key) => {
+  const {
+    action
+  } = key.dataset;
+  if (!action) return 'number';
+  if (
+    action === 'add' ||
+    action === 'subtract' ||
+    action === 'multiply' ||
+    action === 'divide'
+  ) return 'operator';
+  // For everything else, return the action
+  return action;
+}
+
 //call the createResultString function which needs  three variables—key, displayedNum and calculator.dataset(create a variable called state)
 const createResultString = (key, displayedNum, state) => {
   //get the keyContent and action from key
@@ -17,13 +47,15 @@ const createResultString = (key, displayedNum, state) => {
   const previousKeyType = state.previousKeyType;
   const keyType = getKeyType(key);
 
+  //if the calculator shows 0 - replace it with the clicked key
+  //if the previousKeyType is an operator - replace the displayed number with the clicked number
+  //using a ternary operator:
   if (keyType === 'number') {
-    //if the calculator shows 0 - replace it with the clicked key
-    //if the previousKeyType is an operator - replace the displayed number with the clicked number
-    //using a ternary operator:
     return displayedNum === '0' ||
       previousKeyType === 'operator' ||
-      previousKeyType === 'calculate' ? keyContent : displayedNum + keyContent; //append the clicked key to the displayed number
+      previousKeyType === 'calculate' ?
+      keyContent :
+      displayedNum + keyContent;
   }
 
   if (keyType === 'decimal') {
@@ -35,9 +67,6 @@ const createResultString = (key, displayedNum, state) => {
   }
 
   if (keyType === 'operator') {
-    const firstValue = calculator.dataset.firstValue;
-    const operator = calculator.dataset.operator;
-
     //when we want to calculate more than two numbers
     //check if the operator is has been already hit- if yes dont perform a calculation before hit another number
     return firstValue &&
@@ -52,13 +81,6 @@ const createResultString = (key, displayedNum, state) => {
   if (keyType === 'clear') return 0;
 
   if (keyType === 'calculate') {
-    let firstValue = calculator.dataset.firstValue;
-    const operator = calculator.dataset.operator;
-    //create a secondValue constant which is equal to the currently displayed number.
-    // const secondValue = displayedNum;
-    const modValue = calculator.dataset.modValue;
-
-
     //only when the firstValue set => execute the calculate function
     return firstValue
       //correcting the calculation - when after calculation and hitting the calculate key again -> set the result to the firstValue
@@ -76,17 +98,14 @@ const createResultString = (key, displayedNum, state) => {
 const updateCalculatorState = (key, calculator, calculatedValue, displayedNum) => {
   const keyType = getKeyType(key);
   calculator.dataset.previousKeyType = keyType;
-
-  //using array.from - The Array.from() method creates a new, shallow-copied Array instance from an array-like or iterable object
-  //children property - contains all of the child elements of the node upon which it was called.
-  //the parentNode of the key is the calculatorKeys div
-  Array.from(key.parentNode.children).forEach(k =>
-    k.classList.remove('is-depressed')); //Remove .is-depressed class for all keys
+  const {
+    firstValue,
+    operator,
+    modValue,
+    previousKeyType
+  } = calculator.dataset;
 
   if (keyType === 'operator') {
-    //Using classList is a convenient alternative to accessing an element's list of classes
-    //added method adds a specified class
-    key.classList.add('is-depressed');
     //storing the type of the action, operator which was clicked
     calculator.dataset.operator = key.dataset.action;
     calculator.dataset.firstValue = firstValue &&
@@ -97,21 +116,11 @@ const updateCalculatorState = (key, calculator, calculatedValue, displayedNum) =
       displayedNum;
   }
 
-  if (action === 'clear') {
-    if (key.textContent === 'AC') {
-      calculator.dataset.firstValue = ''
-      calculator.dataset.modValue = ''
-      calculator.dataset.operator = ''
-      calculator.dataset.previousKeyType = ''
-    } else {
-      key.textContent = 'AC'
-    }
-  }
-
-  //change the text of the clear button, if the ation is not the pressing of the clear button .the clear entry - CE - will be shown.
-  if (action !== 'clear') {
-    const clearButton = calculator.querySelector('[data-actionc=clear]');
-    clearButton.textContent = 'CE';
+  if (keyType === 'clear' && key.textContent === 'AC') {
+    calculator.dataset.firstValue = ''
+    calculator.dataset.modValue = ''
+    calculator.dataset.operator = ''
+    calculator.dataset.previousKeyType = ''
   }
 
   if (keyType === 'calculate') {
@@ -121,63 +130,35 @@ const updateCalculatorState = (key, calculator, calculatedValue, displayedNum) =
   }
 }
 
-//creating a calculate function
-const calculate = (n1, operator, n2) => {
-  //create two variables which contain float values
-  const firstNum = parseFloat(n1);
-  const secondNum = parseFloat(n2);
-  //using early returns
-  if (operator === 'add') return firstNum + secondNum;
-  if (operator === 'subtract') return firstNum - secondNum;
-  if (operator === 'multiply') return firstNum * secondNum;
-  if (operator === 'divide') return firstNum / secondNum;
-}
 
-//create a function which return the type of key was clicked
-const getKeyType = (key) => {
-  const (action) = key.dataset;
-  if (!action) return 'number'
-  if (
-    action === 'add' ||
-    action === 'subtract' ||
-    action === 'multiply' ||
-    action === 'divide'
-  ) return 'operator'
-  // For everything else, return the action
-  return action;
+const updateVisualState = (key, calculator) => {
+  const keyType = getKeyType(key)
+  //using array.from - The Array.from() method creates a new, shallow-copied Array instance from an array-like or iterable object
+  //children property - contains all of the child elements of the node upon which it was called.
+  //the parentNode of the key is the calculatorKeys div
+  Array.from(key.parentNode.children).forEach(k => k.classList.remove('is-depressed'))
+  //Using classList is a convenient alternative to accessing an element's list of classes
+  //added method adds a specified class
+  if (keyType === 'operator') key.classList.add('is-depressed')
+  if (keyType === 'clear' && key.textContent !== 'AC') key.textContent = 'AC'
+  if (keyType !== 'clear') {
+    const clearButton = calculator.querySelector('[data-action=clear]')
+    clearButton.textContent = 'CE'
+  }
 }
-
 
 keys.addEventListener('click', e => {
   //The target event (e) property returns the element that triggered the event
   //the number of the key what was clicked
-  if (e.target.matches('button')) return
+  if (!e.target.matches('button')) return
 
   //determine the type of key that is clicked
   //the const key = which key is clicked
-  const key = e.target;
-  const displayedNum = display.textContent;
-  const resultString = createResultString(key, displayedNum, calculator.dataset);
+  const key = e.target
+  const displayedNum = display.textContent
+  const resultString = createResultString(key, displayedNum, calculator.dataset)
 
-  display.textContent = resultString;
-
-  // Pass in necessary values
+  display.textContent = resultString
   updateCalculatorState(key, calculator, resultString, displayedNum);
-
-  // //dataset property provides read/write access to all the custom data attributes (data-*) set on the element
-  // const action = key.dataset.action;
-
-  // //textContent returns the text content of the element
-  // //returns the content of the clicked element
-  // const keyContent = key.textContent;
-  //
-  // //returns the content of the displayed element
-  // const displayedNum = display.textContent;
-  //
-  // const previousKeyType = calculator.dataset.previousKeyType;
-
-  //when action variable returns false that means that the key doesnt have a data-action,
-  // which means it is a number key
-  //create an pure function which return the value needs to be displayed on the calculator
-
+  updateVisualState(key, calculator);
 })
